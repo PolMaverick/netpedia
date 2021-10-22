@@ -20,7 +20,7 @@ public class SignupActivity extends AppCompatActivity {
     Button btnSignup;
     ImageView imageView;
     MyDBHelper myDBHelper;
-
+    // git에 올리려고 수정 중
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
