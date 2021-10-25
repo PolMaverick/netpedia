@@ -3,7 +3,10 @@ package com.mega.netpedia;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,9 +47,37 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String email = loginEmail.getText().toString();
+                String pw = loginPw.getText().toString();
 
+                SQLiteDatabase sqlDB = myDBHelper.getReadableDatabase();
+                String sql = "select * from member where memEmail = '" + email + "' and memPw = '" + pw + "'";
+                Cursor cursor = sqlDB.rawQuery(sql, null);
+                Log.d("sqlite3DML", "데이터 불러오기 성공...");
+//                String email2 = "skyloveeagles@gmail.com";
+//                String pw2 = "12345qwert";
+                // db에서 가져와서 변수에 넣어주기
+                String email2 = "";
+                String pw2 = "";
+                String name = "";
+                while (cursor.moveToNext()) {
+                    email2 = cursor.getString(0);
+                    name = cursor.getString(1);
+                    pw2 = cursor.getString(2);
+                }
+                if (email.equals(email2)&&pw.equals(pw2)) {
+                    Toast.makeText(getApplicationContext(), name + "님이 로그인 했습니다.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("email", email);
+                    intent.putExtra("name", name);
+                    startActivity(intent);
+                } else{
+                    Toast.makeText(getApplicationContext(), "아이디나 비밀번호가 다릅니다. 다시 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                sqlDB.close();
+                cursor.close();
+                Log.d("sqlite3DML", "데이터베이스 closed...");
             }
         });
-
     }
 }

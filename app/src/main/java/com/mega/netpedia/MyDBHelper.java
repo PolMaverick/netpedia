@@ -19,7 +19,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
     // 테이블 만드는 코드
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE member (memId char(50), memEmail char(50), memPw char(50), moviewRating char());");
+        db.execSQL("CREATE TABLE member (memEmail char(50) PRIMARY KEY, memName char(50), memPw char(50));");
+        db.execSQL("CREATE TABLE movie (movieId char(50) PRIMARY KEY, movieTitle char(50), moviePoster char(50));");
+        db.execSQL("CREATE TABLE rating (ratingId integer PRIMARY KEY autoincrement, movieRId char(50), memREmail char(50), movieRPoster char(50), movieRTitle char(50), rating real(50));");
+        db.execSQL("CREATE TABLE memo (memoId integer PRIMARY KEY autoincrement, movieMId char(50), memMEmail char(50), movieMPoster char(50), movieMTitle char(50), memo real(50));");
+        db.execSQL("CREATE TABLE wish (wishId integer PRIMARY KEY autoincrement, movieWId char(50), memWEmail char(50), movieWPoster char(50), movieWTitle char(50));");
         Log.d("sqlite3DDL", "CREATE TABLE 호출함...");
     }
 
@@ -27,8 +31,13 @@ public class MyDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS member");
+        db.execSQL("DROP TABLE IF EXISTS movie");
+        db.execSQL("DROP TABLE IF EXISTS rating");
+        db.execSQL("DROP TABLE IF EXISTS wish");
         Log.d("sqlite3DDL", "DROP TABLE 호출함...");
         onCreate(db);
-
     }
+
+
+
 }
